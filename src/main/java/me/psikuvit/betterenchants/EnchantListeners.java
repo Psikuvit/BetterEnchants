@@ -25,8 +25,6 @@ public class EnchantListeners implements Listener {
                         newHealth = 20;
                     }
                     player.setHealth(newHealth);
-                    player.sendMessage("Healed for " + result);
-
                 }
             }
         }

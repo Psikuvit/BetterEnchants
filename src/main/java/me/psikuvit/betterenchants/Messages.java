@@ -1,6 +1,12 @@
 package me.psikuvit.betterenchants;
 
-public class Utils {
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Messages {
 
     public static String convertToRomanNumeral(int number) {
         if (number < 1 || number > 100) {
@@ -20,4 +26,16 @@ public class Utils {
 
         return romanNumeral.toString();
     }
+
+    public static String color(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+    public static List<String> color(List<String> msgs) {
+        return msgs.stream().map(Messages::color).collect(Collectors.toList());
+    }
+
+    public static void log(String msg) {
+        Bukkit.getLogger().info(msg);
+    }
+
 }

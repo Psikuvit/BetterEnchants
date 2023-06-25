@@ -24,7 +24,7 @@ public class EnchantingSystem {
 
     public static void addCustomEnchantment(ItemStack item, CustomEnchantment enchantment, int level) {
         if (getCustomEnchantment(item) == enchantment) {
-            Bukkit.getLogger().info("This Item already have this enchant");
+            Messages.log("This Item already have this enchant");
             return;
         }
         ItemMeta itemMeta = item.getItemMeta();
@@ -32,7 +32,7 @@ public class EnchantingSystem {
         container.set(ENCHANTMENT_KEY, PersistentDataType.STRING, enchantment.name());
 
         if (level > enchantment.getMaxLevel()) {
-            Bukkit.getLogger().info("Couldn't add enchant because the max level for this enchant is: " + enchantment.getMaxLevel());
+            Messages.log("Couldn't add enchant because the max level for this enchant is: " + enchantment.getMaxLevel());
             return;
         }
 
@@ -42,8 +42,6 @@ public class EnchantingSystem {
         EnchantUtils.addGlowEffect(itemMeta);
 
         item.setItemMeta(itemMeta);
-
-        Bukkit.getLogger().info("Enchanted");
     }
 
     public static CustomEnchantment getCustomEnchantment(ItemStack item) {

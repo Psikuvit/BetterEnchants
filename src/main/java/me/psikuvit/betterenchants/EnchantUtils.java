@@ -32,7 +32,7 @@ public class EnchantUtils {
 
         if (lore == null) lore = new ArrayList<>();
 
-        lore.add(ChatColor.GRAY + enchantment.getDisplayName() + " " + Utils.convertToRomanNumeral(level));
+        lore.add(ChatColor.GRAY + enchantment.getDisplayName() + " " + Messages.convertToRomanNumeral(level));
         meta.setLore(lore);
     }
 
