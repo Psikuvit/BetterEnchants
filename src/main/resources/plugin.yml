@@ -1,0 +1,7 @@
+name: BetterEnchants
+version: '${project.version}'
+main: me.psikuvit.betterenchants.BetterEnchants
+api-version: '1.13'
+
+commands:
+  lifesteal:
