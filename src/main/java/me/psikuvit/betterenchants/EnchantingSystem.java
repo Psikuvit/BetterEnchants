@@ -30,17 +30,17 @@ public class EnchantingSystem {
         ItemMeta itemMeta = item.getItemMeta();
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         container.set(ENCHANTMENT_KEY, PersistentDataType.STRING, enchantment.name());
+
         if (level > enchantment.getMaxLevel()) {
             Bukkit.getLogger().info("Couldn't add enchant because the max level for this enchant is: " + enchantment.getMaxLevel());
             return;
         }
-        container.set(new NamespacedKey(pluginInstance, enchantment.name()), PersistentDataType.INTEGER, level);
-        List<String> lore = item.getItemMeta().getLore();
-        if (lore == null) lore = new ArrayList<>();
 
-        lore.add(ChatColor.GRAY + enchantment.getDisplayName() + " " + Utils.convertToRomanNumeral(level));
-        itemMeta.setLore(lore);
-        Utils.addGlowEffect(itemMeta);
+        container.set(new NamespacedKey(pluginInstance, enchantment.name()), PersistentDataType.INTEGER, level);
+
+        EnchantUtils.addEnchantLore(enchantment, level, itemMeta);
+        EnchantUtils.addGlowEffect(itemMeta);
+
         item.setItemMeta(itemMeta);
 
         Bukkit.getLogger().info("Enchanted");
