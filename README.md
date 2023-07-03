@@ -1,15 +1,13 @@
 # BetterEnchants
 
-<h2>How it works</h1>
 <ul>
     <li>
       <h2>How it works</h2>
     </li>
     <p>currently unkownen works only with commands</p>
     <li>
-      <h2>How it works</h2>
+      <h2>Current Enchants</h2>
     </li>
-    <li>Traversy Media</li>
 </ul>
 
 
