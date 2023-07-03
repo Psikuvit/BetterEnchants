@@ -31,7 +31,7 @@
               <h3>Growth</h3>
       <p>replants full growen crops faster each second in a radius that depends on the enchant level</p>
               <h3>Explosive Shots</h3>
-      <p>replanrs full grown crops</p>
+      <p>makes all arrows fired from the bow that contains this enchant will explode when they land and the damage is increased depending on enchant level</p>
       <p>https://github.com/Psikuvit/BetterEnchants/assets/89230146/aadc5226-399f-4b49-9844-bb6832581579</p>
     </li>
 </ul>
