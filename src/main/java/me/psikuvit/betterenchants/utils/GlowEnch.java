@@ -1,4 +1,4 @@
-package me.psikuvit.betterenchants;
+package me.psikuvit.betterenchants.utils;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -15,7 +15,7 @@ public class GlowEnch extends Enchantment {
     @NotNull
     @Override
     public String getName() {
-        return "JeffLibGlowEffect";
+        return "xPsikuvitGlowEnchant";
     }
 
     @Override

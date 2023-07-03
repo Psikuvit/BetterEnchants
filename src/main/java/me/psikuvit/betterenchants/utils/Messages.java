@@ -1,7 +1,9 @@
-package me.psikuvit.betterenchants;
+package me.psikuvit.betterenchants.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,5 +39,11 @@ public class Messages {
     public static void log(String msg) {
         Bukkit.getLogger().info(msg);
     }
+    public static void sendMessage(Player player, String msg) {
+        player.sendMessage(color(msg));
+    }
 
+    public static void sendMessage(HumanEntity player, String msg) {
+        player.sendMessage(color(msg));
+    }
 }

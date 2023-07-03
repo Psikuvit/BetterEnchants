@@ -1,42 +1,58 @@
 package me.psikuvit.betterenchants;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
+import me.psikuvit.betterenchants.utils.CustomEnchantment;
+import me.psikuvit.betterenchants.utils.EnchantUtils;
+import me.psikuvit.betterenchants.utils.Messages;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EnchantingSystem {
 
-    private static final BetterEnchants pluginInstance = BetterEnchants.getPlugin();
 
-    private static final NamespacedKey ENCHANTMENT_KEY = new NamespacedKey(pluginInstance, "custom_enchantment");
-
-    public static boolean hasCustomEnchantment(ItemStack item) {
+    public static boolean hasCustomEnchantment(ItemStack item, CustomEnchantment enchantment) {
+        if (item == null || !item.hasItemMeta()) return false;
+        return getCustomEnchantmentLevel(item, enchantment) > 0;
+    }
+    public static boolean containsCustomEnchantment(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return false;
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        return container.has(ENCHANTMENT_KEY, PersistentDataType.STRING);
+        for (CustomEnchantment customEnchantment : CustomEnchantment.values()) {
+            if (container.has(customEnchantment.getKey(), PersistentDataType.STRING)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static void addCustomEnchantment(ItemStack item, CustomEnchantment enchantment, int level) {
-        if (getCustomEnchantment(item) == enchantment) {
-            Messages.log("This Item already have this enchant");
+
+    public static void addCustomEnchantment(Player player, ItemStack item, CustomEnchantment enchantment, int level) {
+        if (item == null) return;
+        if (!enchantment.getTarget().includes(item.getType())) {
+            Messages.sendMessage(player, "This enchant can't be applied to this Item");
             return;
+        }
+        if (hasCustomEnchantment(item, enchantment)) {
+            Messages.sendMessage(player, "This Item already have this enchant");
+            return;
+        }
+        if (getCustomEnchantmentLevel(item, enchantment) >= level) {
+            Messages.sendMessage(player, "This item has a higher tier");
+        }
+        if (enchantment.getToReplace() != null) {
+            if (item.getItemMeta().hasEnchant(enchantment.getToReplace())) item.removeEnchantment(enchantment.getToReplace());
         }
         ItemMeta itemMeta = item.getItemMeta();
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(ENCHANTMENT_KEY, PersistentDataType.STRING, enchantment.name());
 
         if (level > enchantment.getMaxLevel()) {
-            Messages.log("Couldn't add enchant because the max level for this enchant is: " + enchantment.getMaxLevel());
+            Messages.sendMessage(player, "Couldn't add enchant because the max level for this enchant is: " + enchantment.getMaxLevel());
             return;
         }
 
-        container.set(new NamespacedKey(pluginInstance, enchantment.name()), PersistentDataType.INTEGER, level);
+        container.set(enchantment.getKey(), PersistentDataType.INTEGER, level);
 
         EnchantUtils.addEnchantLore(enchantment, level, itemMeta);
         EnchantUtils.addGlowEffect(itemMeta);
@@ -44,48 +60,16 @@ public class EnchantingSystem {
         item.setItemMeta(itemMeta);
     }
 
-    public static CustomEnchantment getCustomEnchantment(ItemStack item) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        String enchantmentName = container.get(ENCHANTMENT_KEY, PersistentDataType.STRING);
-        if (enchantmentName != null) {
-            return CustomEnchantment.valueOf(enchantmentName);
-        }
-        return null;
-    }
-
     public static int getCustomEnchantmentLevel(ItemStack item, CustomEnchantment enchantment) {
+        if (item == null || !item.hasItemMeta()) return 0;
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        NamespacedKey levelKey = new NamespacedKey(pluginInstance, enchantment.getDisplayName());
-        Integer level = container.get(levelKey, PersistentDataType.INTEGER);
-        return level != null ? level : 0;
+        return container.getOrDefault(enchantment.getKey(), PersistentDataType.INTEGER, 0);
     }
 
-    public static void removeCustomEnchantment(ItemStack item) {
+    public static void removeCustomEnchantment(ItemStack item, CustomEnchantment enchantment) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        container.remove(ENCHANTMENT_KEY);
-        for (CustomEnchantment enchantment : CustomEnchantment.values()) {
-            container.remove(new NamespacedKey(pluginInstance, enchantment.name()));
-        }
+        container.remove(enchantment.getKey());
+        EnchantUtils.removeEnchantLore(enchantment, item.getItemMeta());
     }
 
-    public enum CustomEnchantment {
-        // Define your custom enchantments here
-        LIFE_STEAL("Life_Steal", 3);
-
-        private final String displayName;
-        private final int maxLevel;
-
-        CustomEnchantment(String displayName, int maxLevel) {
-            this.displayName = displayName;
-            this.maxLevel = maxLevel;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        public int getMaxLevel() {
-            return maxLevel;
-        }
-    }
 }
