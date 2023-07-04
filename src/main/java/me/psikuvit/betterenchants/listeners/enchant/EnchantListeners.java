@@ -50,9 +50,9 @@ public class EnchantListeners implements Listener {
             } else if (EnchantingSystem.hasCustomEnchantment(itemStack, CustomEnchantment.LIFE_STEAL)) {
                 int level = EnchantingSystem.getCustomEnchantmentLevel(itemStack, CustomEnchantment.LIFE_STEAL);
 
-                double result = 0.05 * level + 0.05;
+                double result = (0.05 * level + 0.05) * 2;
                 double playerHealth = player.getHealth();
-                double newHealth = result * 2 + playerHealth;
+                double newHealth = result + playerHealth;
                 if (newHealth > 20) {
                     newHealth = 20;
                 }

@@ -1,20 +1,17 @@
-package me.psikuvit.betterenchants.commands;
+package me.psikuvit.betterenchants.comma;
 
 import me.psikuvit.betterenchants.Animation;
 import me.psikuvit.betterenchants.BetterEnchants;
-import me.psikuvit.betterenchants.EnchantingSystem;
 import me.psikuvit.betterenchants.menusystem.menu.PlayerArmorGUI;
 import me.psikuvit.betterenchants.utils.AnimationsUtils;
-import me.psikuvit.betterenchants.utils.CustomEnchantment;
 import me.psikuvit.betterenchants.utils.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class EnchantStartCMD implements CommandExecutor {
+public class AnimationCommands implements CommandExecutor {
 
     private final BetterEnchants plugin = BetterEnchants.getPlugin();
 
@@ -45,20 +42,6 @@ public class EnchantStartCMD implements CommandExecutor {
                         return true;
                     }
                     new PlayerArmorGUI(plugin.getPlayerMenuUtility(player), plugin).open(player);
-                }
-            }
-        } else if (args.length == 3) {
-            if (args[0].equals("enchant")) {
-                int i;
-                try {
-                    i = Integer.parseInt(args[2]);
-
-                    CustomEnchantment customEnchantment = CustomEnchantment.valueOf(args[1].toUpperCase());
-                    ItemStack itemStack = player.getInventory().getItemInMainHand();
-                    EnchantingSystem.addCustomEnchantment(player, itemStack, customEnchantment, i);
-
-                } catch (IllegalArgumentException e) {
-                    Messages.sendMessage(player, "&cEnchant doesn't exist");
                 }
             }
         }

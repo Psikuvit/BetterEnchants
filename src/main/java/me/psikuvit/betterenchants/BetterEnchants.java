@@ -2,7 +2,8 @@ package me.psikuvit.betterenchants;
 
 import me.psikuvit.betterenchants.armorequip.ArmorListener;
 import me.psikuvit.betterenchants.armorequip.DispenserArmorListener;
-import me.psikuvit.betterenchants.commands.EnchantStartCMD;
+import me.psikuvit.betterenchants.commands.CommandRegister;
+import me.psikuvit.betterenchants.listeners.AnvilWork;
 import me.psikuvit.betterenchants.listeners.enchant.EnchantListeners;
 import me.psikuvit.betterenchants.listeners.InventoryClickEventListener;
 import me.psikuvit.betterenchants.listeners.MoveListener;
@@ -14,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class BetterEnchants extends JavaPlugin {
@@ -31,15 +33,17 @@ public final class BetterEnchants extends JavaPlugin {
         try{
             //Better way to check for this? Only in 1.13.1+?
             Class.forName("org.bukkit.event.block.BlockDispenseArmorEvent");
-           pm.registerEvents(new DispenserArmorListener(), this);
+            pm.registerEvents(new DispenserArmorListener(), this);
         }catch(Exception ignored){}
 
         pm.registerEvents(new EnchantListeners(), this);
         pm.registerEvents(new InventoryClickEventListener(), this);
         pm.registerEvents(new MoveListener(), this);
         pm.registerEvents(new QuitJoinListener(), this);
+        pm.registerEvents(new AnvilWork(), this);
 
-        getCommand("betterenchants").setExecutor(new EnchantStartCMD());
+        Objects.requireNonNull(getCommand("betterenchants")).setExecutor(new CommandRegister(this));
+        Objects.requireNonNull(getCommand("betterenchants")).setTabCompleter(new CommandRegister(this));
     }
 
     @Override
