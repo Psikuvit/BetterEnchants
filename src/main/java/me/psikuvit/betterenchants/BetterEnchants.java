@@ -48,10 +48,11 @@ public final class BetterEnchants extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (!AnimationsUtils.getPlayerStands().isEmpty()) {
-            for (Animation animation : AnimationsUtils.getPlayerStands().values()) animation.setStopAnimation(true);
+        AnimationsUtils animationsUtils = AnimationsUtils.getInstance();
+        if (!animationsUtils.getPlayerStands().isEmpty()) {
+            for (Animation animation : animationsUtils.getPlayerStands().values()) animation.setStopAnimation(true);
         }
-}
+    }
 
     public static BetterEnchants getPlugin() {
         return plugin;

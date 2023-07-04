@@ -64,22 +64,30 @@ public class GiveBookArg extends CommandAbstract {
 
     @Override
     public List<String> tabComplete(String[] args) {
-        if (args.length == 3) {
-            List<String> completions = new ArrayList<>();
+        switch (args.length) {
+            case 2 -> {
+                List<String> completions = new ArrayList<>();
 
-            for (CustomEnchantment customEnchantment : CustomEnchantment.values()) completions.add(customEnchantment.name());
-            completions.removeIf(cmdAlias -> !cmdAlias.toLowerCase().startsWith(args[2].toLowerCase()));
+                Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                completions.removeIf(cmdAlias -> !cmdAlias.toLowerCase().startsWith(args[1].toLowerCase()));
+                return completions;
+            }
+            case 3 -> {
+                List<String> completions = new ArrayList<>();
 
-            return completions;
-        } else if (args.length == 4) {
-            List<String> levels = new ArrayList<>();
-            try {
-                CustomEnchantment customEnchantment = CustomEnchantment.valueOf(args[2]);
-                for (int i = 1; i <= customEnchantment.getMaxLevel(); i++) levels.add(String.valueOf(i));
-                return levels;
-
-            }catch (IllegalArgumentException ignored) {
-                return Collections.emptyList();
+                for (CustomEnchantment customEnchantment : CustomEnchantment.values()) completions.add(customEnchantment.name());
+                completions.removeIf(cmdAlias -> !cmdAlias.toLowerCase().startsWith(args[2].toLowerCase()));
+                return completions;
+            }
+            case 4 -> {
+                List<String> levels = new ArrayList<>();
+                try {
+                    CustomEnchantment customEnchantment = CustomEnchantment.valueOf(args[2]);
+                    for (int i = 1; i <= customEnchantment.getMaxLevel(); i++) levels.add(String.valueOf(i));
+                    return levels;
+                } catch (IllegalArgumentException ignored) {
+                    return Collections.emptyList();
+                }
             }
         }
         return Collections.emptyList();

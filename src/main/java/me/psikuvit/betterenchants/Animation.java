@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 public class Animation {
 
     private final BetterEnchants plugin = BetterEnchants.getPlugin();
+    private final AnimationsUtils animationsUtils = AnimationsUtils.getInstance();
     private ArmorStand armorStand;
     private final Player player;
     private ItemStack[] armor;
@@ -77,12 +78,12 @@ public class Animation {
         player.getInventory().setArmorContents(null);
 
         // Play the sounds and start the blessing from inside the chest
-        AnimationsUtils.playOpenSound(player, 1f, 0.793701f).runTaskLater(plugin, 5L);
-        AnimationsUtils.playOpenSound(player, 1f, 0.890899f).runTaskLater(plugin, 10L);
-        AnimationsUtils.playOpenSound(player, 1f, 1.0f).runTaskLater(plugin, 15L);
-        AnimationsUtils.playOpenSound(player, 1f, 1.059463f).runTaskLater(plugin, 20L);
-        AnimationsUtils.playOpenSound(player, 1f, 1.189207f).runTaskLater(plugin, 25L);
-        AnimationsUtils.startFromBottom(armorStand);
+        animationsUtils.playOpenSound(player, 1f, 0.793701f).runTaskLater(plugin, 5L);
+        animationsUtils.playOpenSound(player, 1f, 0.890899f).runTaskLater(plugin, 10L);
+        animationsUtils.playOpenSound(player, 1f, 1.0f).runTaskLater(plugin, 15L);
+        animationsUtils.playOpenSound(player, 1f, 1.059463f).runTaskLater(plugin, 20L);
+        animationsUtils.playOpenSound(player, 1f, 1.189207f).runTaskLater(plugin, 25L);
+        animationsUtils.startFromBottom(armorStand);
 
         // Bobbing and rotation runnables
         new RotationRunnable(armorStand).runTaskTimer(plugin, 0, 0);
@@ -96,7 +97,7 @@ public class Animation {
                 if (stopAnimation) {
                     armorStand.remove();
                     player.getInventory().setArmorContents(armor);
-                    AnimationsUtils.getPlayerStands().remove(player.getUniqueId());
+                    animationsUtils.getPlayerStands().remove(player.getUniqueId());
                     cancel();
                 } else if (pause) {
                     armorStand.remove();

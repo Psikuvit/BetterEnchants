@@ -5,8 +5,6 @@ import me.psikuvit.betterenchants.BetterEnchants;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -15,9 +13,20 @@ import java.util.UUID;
 
 public class AnimationsUtils {
 
-    private final static Map<UUID, Animation> playerStands = new HashMap<>();
+    private final Map<UUID, Animation> playerStands;
+    private static AnimationsUtils INSTANCE;
 
-    public static BukkitRunnable teleportBlessing(ArmorStand armorStand) {
+    public AnimationsUtils() {
+        playerStands = new HashMap<>();
+    }
+    public static AnimationsUtils getInstance() {
+        if (INSTANCE == null) {
+            return INSTANCE = new AnimationsUtils();
+        }
+        return INSTANCE;
+    }
+
+    public BukkitRunnable teleportBlessing(ArmorStand armorStand) {
 
         return new BukkitRunnable() {
             @Override
@@ -28,13 +37,13 @@ public class AnimationsUtils {
     }
 
     // Start teleporting the armor stand from the bottom (inside the chest)
-    public static void startFromBottom(ArmorStand armorStand) {
+    public void startFromBottom(ArmorStand armorStand) {
         for (int i = 0; i <= 18; i+=2)
             teleportBlessing(armorStand).runTaskLater(BetterEnchants.getPlugin(), i);
     }
 
     // Play blessing chest open sound
-    public static BukkitRunnable playOpenSound(Player player, Float volume, Float pitch) {
+    public BukkitRunnable playOpenSound(Player player, Float volume, Float pitch) {
         return new BukkitRunnable() {
             @Override
             public void run() {
@@ -43,7 +52,7 @@ public class AnimationsUtils {
         };
     }
 
-    public static Map<UUID, Animation> getPlayerStands() {
+    public Map<UUID, Animation> getPlayerStands() {
         return playerStands;
     }
 }
