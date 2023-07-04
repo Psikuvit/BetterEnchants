@@ -1,8 +1,7 @@
 package me.psikuvit.betterenchants.commands;
 
 import me.psikuvit.betterenchants.BetterEnchants;
-import me.psikuvit.betterenchants.commands.args.ApplyEnchantArg;
-import me.psikuvit.betterenchants.commands.args.GiveBookArg;
+import me.psikuvit.betterenchants.commands.args.*;
 import me.psikuvit.betterenchants.utils.Messages;
 import me.psikuvit.betterenchants.commands.CommandAbstract;
 import org.bukkit.command.Command;
@@ -21,6 +20,10 @@ public class CommandRegister implements CommandExecutor, TabCompleter {
         commandAbstractMap = new HashMap<>();
         commandAbstractMap.put("enchant", new ApplyEnchantArg(plugin));
         commandAbstractMap.put("book", new GiveBookArg(plugin));
+        commandAbstractMap.put("start", new AnimationStartArg(plugin));
+        commandAbstractMap.put("stop", new AnimationStopArg(plugin));
+        commandAbstractMap.put("gui", new AnimationGuiArg(plugin));
+
 
     }
 
