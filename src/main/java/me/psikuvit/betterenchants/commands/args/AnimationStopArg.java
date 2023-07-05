@@ -1,5 +1,6 @@
 package me.psikuvit.betterenchants.commands.args;
 
+import me.psikuvit.betterenchants.Animation;
 import me.psikuvit.betterenchants.BetterEnchants;
 import me.psikuvit.betterenchants.commands.CommandAbstract;
 import me.psikuvit.betterenchants.menusystem.menu.PlayerArmorGUI;
@@ -25,7 +26,8 @@ public class AnimationStopArg extends CommandAbstract {
             Messages.sendMessage(player, "&cYou have no enchant session at the moment!.");
             return;
         }
-        new PlayerArmorGUI(plugin.getPlayerMenuUtility(player), plugin).open(player);
+        Animation animation = animationsUtils.getPlayerStands().get(player.getUniqueId());
+        animation.setStopAnimation(true);
     }
 
     @Override

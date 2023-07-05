@@ -55,4 +55,15 @@ public enum CustomEnchantment {
     public Enchantment getToReplace() {
         return toReplace;
     }
+
+    @Override
+    public String toString() {
+        return "CustomEnchantment{" +
+                "displayName='" + displayName + '\'' +
+                ", maxLevel=" + maxLevel +
+                ", target=" + target +
+                ", key=" + key +
+                ", toReplace=" + toReplace +
+                '}';
+    }
 }

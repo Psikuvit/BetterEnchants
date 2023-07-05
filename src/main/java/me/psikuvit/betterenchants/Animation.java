@@ -4,13 +4,11 @@ import me.psikuvit.betterenchants.runnables.BobbingRunnable;
 import me.psikuvit.betterenchants.runnables.ParticleRunnable;
 import me.psikuvit.betterenchants.runnables.RotationRunnable;
 import me.psikuvit.betterenchants.utils.AnimationsUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 public class Animation {
@@ -20,6 +18,7 @@ public class Animation {
     private ArmorStand armorStand;
     private final Player player;
     private ItemStack[] armor;
+    private ItemStack tool;
     private boolean stopAnimation;
     private boolean pause;
 
@@ -28,6 +27,7 @@ public class Animation {
         stopAnimation = false;
         pause = false;
         armor = player.getInventory().getArmorContents();
+        tool = player.getInventory().getItemInMainHand();
         createArmorStandAnimation();
     }
 
@@ -55,15 +55,21 @@ public class Animation {
         return armor;
     }
 
-    public void updateArmor(ItemStack itemStack) {
+    public ItemStack getTool() {
+        return tool;
+    }
+
+    public void updateArmorTools(ItemStack itemStack) {
         ItemStack[] itemStacks = getArmor();
-        if (itemStack.getType().getEquipmentSlot().equals(EquipmentSlot.HAND)) itemStacks[3] = itemStack;
+        if (itemStack.getType().getEquipmentSlot().equals(EquipmentSlot.HEAD)) itemStacks[3] = itemStack;
         else if (itemStack.getType().getEquipmentSlot().equals(EquipmentSlot.CHEST)) itemStacks[2] = itemStack;
         else if (itemStack.getType().getEquipmentSlot().equals(EquipmentSlot.LEGS)) itemStacks[1] = itemStack;
         else if (itemStack.getType().getEquipmentSlot().equals(EquipmentSlot.FEET)) itemStacks[0] = itemStack;
+        else if (itemStack.getType().getEquipmentSlot().equals(EquipmentSlot.HAND)) tool = itemStack;
         armor = itemStacks;
 
         armorStand.getEquipment().setArmorContents(armor);
+        armorStand.getEquipment().setItemInMainHand(tool);
     }
 
     public void createArmorStandAnimation() {
@@ -72,10 +78,12 @@ public class Animation {
         armorStand = player.getWorld().spawn(player.getLocation().add(vec.getX(), 1.2, vec.getZ()), ArmorStand.class);
         armorStand.setGravity(false);
         armorStand.getEquipment().setArmorContents(armor);
+        armorStand.getEquipment().setItemInMainHand(tool);
         armorStand.setVisible(false);
         armorStand.setArms(false);
 
         player.getInventory().setArmorContents(null);
+        player.getInventory().remove(tool);
 
         // Play the sounds and start the blessing from inside the chest
         animationsUtils.playOpenSound(player, 1f, 0.793701f).runTaskLater(plugin, 5L);
@@ -97,6 +105,7 @@ public class Animation {
                 if (stopAnimation) {
                     armorStand.remove();
                     player.getInventory().setArmorContents(armor);
+                    player.getInventory().addItem(tool);
                     animationsUtils.getPlayerStands().remove(player.getUniqueId());
                     cancel();
                 } else if (pause) {

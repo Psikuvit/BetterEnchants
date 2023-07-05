@@ -11,11 +11,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class QuitJoinListener implements Listener {
 
+    private final AnimationsUtils animationsUtils = AnimationsUtils.getInstance();
+
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        if (AnimationsUtils.getPlayerStands().containsKey(player.getUniqueId())) {
-            Animation animation = AnimationsUtils.getPlayerStands().get(player.getUniqueId());
+        if (animationsUtils.getPlayerStands().containsKey(player.getUniqueId())) {
+            Animation animation = animationsUtils.getPlayerStands().get(player.getUniqueId());
             animation.setPause(true);
         }
     }
@@ -23,8 +25,8 @@ public class QuitJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        if (AnimationsUtils.getPlayerStands().containsKey(player.getUniqueId())) {
-            Animation animation = AnimationsUtils.getPlayerStands().get(player.getUniqueId());
+        if (animationsUtils.getPlayerStands().containsKey(player.getUniqueId())) {
+            Animation animation = animationsUtils.getPlayerStands().get(player.getUniqueId());
             animation.setPause(false);
             animation.createArmorStandAnimation();
         }

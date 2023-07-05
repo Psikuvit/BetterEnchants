@@ -3,6 +3,7 @@ package me.psikuvit.betterenchants;
 import me.psikuvit.betterenchants.utils.CustomEnchantment;
 import me.psikuvit.betterenchants.utils.EnchantUtils;
 import me.psikuvit.betterenchants.utils.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -13,7 +14,7 @@ public class EnchantingSystem {
 
 
     public static boolean hasCustomEnchantment(ItemStack item, CustomEnchantment enchantment) {
-        if (item == null) return false;
+        if (item == null || !item.hasItemMeta()) return false;
         return getCustomEnchantmentLevel(item, enchantment) > 0;
     }
     public static boolean containsCustomEnchantment(ItemStack item) {
@@ -70,7 +71,7 @@ public class EnchantingSystem {
     }
     public static void addEnchantToBook(Player player, ItemStack item, CustomEnchantment enchantment, int level) {
         if (item == null) return;
-        ItemMeta itemMeta = item.getItemMeta();
+        ItemMeta itemMeta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         if (level > enchantment.getMaxLevel()) {

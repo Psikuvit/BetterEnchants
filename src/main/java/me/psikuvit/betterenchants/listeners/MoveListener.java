@@ -12,7 +12,7 @@ public class MoveListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (AnimationsUtils.getPlayerStands().containsKey(player.getUniqueId())) {
+        if (AnimationsUtils.getInstance().getPlayerStands().containsKey(player.getUniqueId())) {
             e.setCancelled(true);
             player.setFlySpeed(0);
             player.setWalkSpeed(0);

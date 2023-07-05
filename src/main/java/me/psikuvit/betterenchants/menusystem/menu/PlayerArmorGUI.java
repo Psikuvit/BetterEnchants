@@ -5,19 +5,16 @@ import me.psikuvit.betterenchants.BetterEnchants;
 import me.psikuvit.betterenchants.menusystem.Menu;
 import me.psikuvit.betterenchants.menusystem.PlayerMenuUtility;
 import me.psikuvit.betterenchants.utils.AnimationsUtils;
-import me.psikuvit.betterenchants.utils.Messages;
-import org.bukkit.Bukkit;
+import me.psikuvit.betterenchants.utils.Target;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class PlayerArmorGUI extends Menu {
 
-    private final @NotNull Player player = Objects.requireNonNull(Bukkit.getPlayer(playerMenuUtility.owner()));
+    private final @NotNull Player player = playerMenuUtility.getPlayer();
 
     public PlayerArmorGUI(PlayerMenuUtility playerMenuUtility, BetterEnchants plugin) {
         super(playerMenuUtility, plugin);
@@ -42,8 +39,7 @@ public class PlayerArmorGUI extends Menu {
             e.getWhoClicked().closeInventory();
             return;
         }
-
-        new PieceGUI(playerMenuUtility, plugin, itemStack).open(player);
+        if (Target.ALL.includes(itemStack)) new PieceEnchantsGUI(playerMenuUtility, plugin, itemStack).open(player);
 
     }
 
@@ -51,8 +47,9 @@ public class PlayerArmorGUI extends Menu {
     public void setMenuItems() {
         setFillerGlass();
         Player player = playerMenuUtility.getPlayer();
-        Animation animation = AnimationsUtils.getPlayerStands().get(player.getUniqueId());
+        Animation animation = AnimationsUtils.getInstance().getPlayerStands().get(player.getUniqueId());
         inventory.setItem(13, animation.getArmor()[3]);
+        inventory.setItem(20, animation.getTool());
         inventory.setItem(22, animation.getArmor()[2]);
         inventory.setItem(31, animation.getArmor()[1]);
         inventory.setItem(40, animation.getArmor()[0]);
